@@ -1,0 +1,10 @@
+D:\VisualStudioProjects\DisturboTax\DisturboTax\bin\Debug\DisturboTax.exe.config
+D:\VisualStudioProjects\DisturboTax\DisturboTax\bin\Debug\DisturboTax.exe
+D:\VisualStudioProjects\DisturboTax\DisturboTax\bin\Debug\DisturboTax.pdb
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csprojResolveAssemblyReference.cache
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.InputForm.resources
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.DisplayForm.resources
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.Properties.Resources.resources
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csproj.GenerateResource.Cache
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.exe
+D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.pdb
