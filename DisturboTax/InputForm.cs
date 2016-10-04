@@ -23,6 +23,19 @@ namespace DisturboTax
         public decimal medicalExpense;
     }
 
+    public struct calculateditems
+    {
+        public decimal adjustedGrossIncome;
+        public decimal reCalc;
+        public decimal exciseCalc;
+        public decimal deductCalc;
+        public decimal medCalc;
+        public decimal gainsCalc;
+        public decimal lossCalc;
+        public decimal penalty;
+        public decimal owedOrRefund;
+    }
+
     public struct taxpayer
     {
         public String name;
@@ -32,14 +45,58 @@ namespace DisturboTax
         public String zipcode;
         public String ssn;
         public int exemptions;
-        public decimal adjustedGrossIncome;
         public taxitems taxItems;
+        public calculateditems calculatedItems;
     }
 
     
 
     public partial class InputForm : Form
     {
+        private void DEBUGFORM()
+        {
+            nameBox.Text = "John";
+            addressBox.Text = "64 Happy Land";
+            cityBox.Text = "City";
+            cobState.SelectedIndex = 8;
+            zipBox.Text = "12345";
+            ssnBox.Text = "1234567890";
+            exemptionsBox.Text = "3";
+
+            grossEarningsBox.Text = "10000.00";
+            withheldBox.Text = "1000.00";
+
+            gainsBox.Text = "100.00";
+            lossBox.Text = "100.00";
+            exciseBox.Text = "100.00";
+
+            reBox.Text = "100.00";
+            medicalBox.Text = "100.00";
+            button1.Focus();
+        }
+
+        private void DEBUGFORMTWO()
+        {
+            nameBox.Text = "Mary";
+            addressBox.Text = "64 Sad Land";
+            cityBox.Text = "City";
+            cobState.SelectedIndex = 8;
+            zipBox.Text = "12345";
+            ssnBox.Text = "1234567890";
+            exemptionsBox.Text = "3";
+
+            grossEarningsBox.Text = "1234.45";
+            withheldBox.Text = "1234.0";
+
+            gainsBox.Text = "123.00";
+            lossBox.Text = "123.00";
+            exciseBox.Text = "0.0";
+
+            reBox.Text = "0.0";
+            medicalBox.Text = "0.0";
+            button1.Focus();
+        }
+
         static taxpayer taxp = new taxpayer();
 
         public InputForm()
@@ -265,48 +322,6 @@ namespace DisturboTax
 
         public static taxpayer getTaxpayerInfo() { return taxp; }
 
-        private void DEBUGFORM()
-        {
-            nameBox.Text = "John";
-            addressBox.Text = "64 Happy Land";
-            cityBox.Text = "City";
-            cobState.SelectedIndex = 8;
-            zipBox.Text = "12345";
-            ssnBox.Text = "1234567890";
-            exemptionsBox.Text = "3";
-
-            grossEarningsBox.Text = "1234.45";
-            withheldBox.Text = "1234.0";
-
-            gainsBox.Text = "123.00";
-            lossBox.Text = "123.00";
-            exciseBox.Text = "0.0";
-
-            reBox.Text = "0.0";
-            medicalBox.Text = "0.0";
-            button1.Focus();
-        }
-
-        private void DEBUGFORMTWO()
-        {
-            nameBox.Text = "Mary";
-            addressBox.Text = "64 Sad Land";
-            cityBox.Text = "City";
-            cobState.SelectedIndex = 8;
-            zipBox.Text = "12345";
-            ssnBox.Text = "1234567890";
-            exemptionsBox.Text = "3";
-
-            grossEarningsBox.Text = "1234.45";
-            withheldBox.Text = "1234.0";
-
-            gainsBox.Text = "123.00";
-            lossBox.Text = "123.00";
-            exciseBox.Text = "0.0";
-
-            reBox.Text = "0.0";
-            medicalBox.Text = "0.0";
-            button1.Focus();
-        }
+        
     }
 }

@@ -13,6 +13,7 @@ namespace DisturboTax
 
     public partial class DisplayForm : Form
     {
+        
         private const int SIZE = 5;
         static taxpayer[] taxpArray = new taxpayer[SIZE];
         static int tracker = 0;
@@ -27,6 +28,54 @@ namespace DisturboTax
         {
             newTaxp = InputForm.getTaxpayerInfo();
             label7.Text = "Calculated tax information for:\n" + newTaxp.name;
+
+            //Calculate each deduction at 1000
+            if(newTaxp.exemptions != 0)
+            {
+                newTaxp.calculatedItems.deductCalc = (decimal)(newTaxp.exemptions * 1000.00);
+                Console.WriteLine(newTaxp.calculatedItems.deductCalc);
+            }
+
+            //Calculate Real Estate Tax
+            if(newTaxp.taxItems.realEstate != 0)
+            {
+                newTaxp.calculatedItems.reCalc = percentageCalc(newTaxp.taxItems.realEstate, 0.25);
+                Console.WriteLine(newTaxp.calculatedItems.reCalc);
+            }
+
+            //Calculate Excise Tax
+            if(newTaxp.taxItems.excise != 0)
+            {
+                newTaxp.calculatedItems.exciseCalc = percentageCalc(newTaxp.taxItems.excise, 0.25);
+                Console.WriteLine(newTaxp.calculatedItems.exciseCalc);
+            }
+                
+            //Deduction for medical
+            if(newTaxp.taxItems.medicalExpense != 0)
+            {
+                newTaxp.calculatedItems.medCalc = percentageCalc(newTaxp.taxItems.medicalExpense, 0.08);
+                Console.WriteLine(newTaxp.calculatedItems.medCalc);
+            }
+
+            //Add 15% for capital gains to gross(if present)
+            if(newTaxp.taxItems.gains != 0)
+            {
+                newTaxp.calculatedItems.gainsCalc = percentageCalc(newTaxp.taxItems.gains, 0.15);
+                Console.WriteLine(newTaxp.calculatedItems.gainsCalc);
+            }
+
+            //Sub 15% for capital loss to gross(if present)
+            if (newTaxp.taxItems.loss != 0)
+            {
+                newTaxp.calculatedItems.lossCalc = percentageCalc(newTaxp.taxItems.loss, 0.15);
+                Console.WriteLine(newTaxp.calculatedItems.lossCalc);
+            }
+
+            Console.WriteLine("AGI: " + (newTaxp.calculatedItems.adjustedGrossIncome = calcAGI()));
+
+            //Calculate percentage withheld and penalize if applicable
+            //  penalty is 10% of what is leftover
+
         }
 
         //New Record Button
@@ -49,5 +98,21 @@ namespace DisturboTax
         {
             taxpArray[tracker++] = newTaxp;
         }
-    }
+
+        private decimal percentageCalc(decimal val, double percentage)
+        {
+            return (val * (decimal)percentage);
+        }
+
+        private decimal calcAGI()
+        {
+            return newTaxp.taxItems.grossEarn -
+                   newTaxp.calculatedItems.deductCalc -
+                   newTaxp.calculatedItems.reCalc -
+                   newTaxp.calculatedItems.exciseCalc -
+                   newTaxp.calculatedItems.medCalc +
+                   newTaxp.calculatedItems.gainsCalc -
+                   newTaxp.calculatedItems.lossCalc;
+        }
+    }//End DisplayForm
 }
