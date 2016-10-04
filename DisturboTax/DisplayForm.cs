@@ -14,7 +14,7 @@ namespace DisturboTax
     public partial class DisplayForm : Form
     {
         
-        private const int SIZE = 5;
+        private const int SIZE = 10;
         static taxpayer[] taxpArray = new taxpayer[SIZE];
         static int tracker = 0;
         taxpayer newTaxp;
@@ -114,5 +114,36 @@ namespace DisturboTax
                    newTaxp.calculatedItems.gainsCalc -
                    newTaxp.calculatedItems.lossCalc;
         }
+
+        private void graduatedTax()
+        {
+            decimal taxPercentage = 0;
+            
+            if(newTaxp.calculatedItems.adjustedGrossIncome > 0)
+            {
+                decimal temp = newTaxp.calculatedItems.adjustedGrossIncome;
+                
+                if(temp > (decimal)999.99)
+                {
+                    taxPercentage = (taxPercentage + (decimal)(999.99 * .10));
+                    temp -= (decimal)999.99;
+                    if(temp > (decimal)9999.99)
+                    {
+                        taxPercentage = (taxPercentage + (decimal)(9999.99 * .15));
+                        temp -= (decimal)9999.99;
+                    }
+                    else
+                    {
+                        taxPercentage = (taxPercentage + (decimal));
+                    }
+                }
+                else
+                {
+                    taxPercentage = (taxPercentage + (temp * (decimal).10));
+                }
+            }
+        }
+
+
     }//End DisplayForm
 }

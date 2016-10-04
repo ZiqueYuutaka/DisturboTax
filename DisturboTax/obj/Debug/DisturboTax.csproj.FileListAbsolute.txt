@@ -8,3 +8,13 @@ D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.Properties
 D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csproj.GenerateResource.Cache
 D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.exe
 D:\VisualStudioProjects\DisturboTax\DisturboTax\obj\Debug\DisturboTax.pdb
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\bin\Debug\DisturboTax.exe.config
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.exe
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.pdb
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\bin\Debug\DisturboTax.exe
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\bin\Debug\DisturboTax.pdb
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csprojResolveAssemblyReference.cache
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.InputForm.resources
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.DisplayForm.resources
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.Properties.Resources.resources
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csproj.GenerateResource.Cache
