@@ -63,7 +63,7 @@ namespace DisturboTax
             ssnBox.Text = "1234567890";
             exemptionsBox.Text = "3";
 
-            grossEarningsBox.Text = "10000.00";
+            grossEarningsBox.Text = "20000.00";
             withheldBox.Text = "1000.00";
 
             gainsBox.Text = "100.00";

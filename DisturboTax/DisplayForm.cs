@@ -72,6 +72,7 @@ namespace DisturboTax
             }
 
             Console.WriteLine("AGI: " + (newTaxp.calculatedItems.adjustedGrossIncome = calcAGI()));
+            Console.WriteLine("Tax on AGI: " + graduatedTax());
 
             //Calculate percentage withheld and penalize if applicable
             //  penalty is 10% of what is leftover
@@ -115,9 +116,9 @@ namespace DisturboTax
                    newTaxp.calculatedItems.lossCalc;
         }
 
-        private void graduatedTax()
+        private decimal graduatedTax()
         {
-            decimal taxPercentage = 0;
+            decimal taxOnGross = 0;
             
             if(newTaxp.calculatedItems.adjustedGrossIncome > 0)
             {
@@ -125,24 +126,70 @@ namespace DisturboTax
                 
                 if(temp > (decimal)999.99)
                 {
-                    taxPercentage = (taxPercentage + (decimal)(999.99 * .10));
+                    taxOnGross = (taxOnGross + (decimal)(999.99 * .10));
                     temp -= (decimal)999.99;
+                    Console.WriteLine("First tax Bracket: " + taxOnGross);
+                    Console.WriteLine("temp value: " + temp);
+
                     if(temp > (decimal)9999.99)
                     {
-                        taxPercentage = (taxPercentage + (decimal)(9999.99 * .15));
+                        taxOnGross = (taxOnGross + (decimal)(9999.99 * .15));
                         temp -= (decimal)9999.99;
+                        Console.WriteLine("Second tax Bracket: " + taxOnGross);
+                        Console.WriteLine("temp value: " + temp);
+
+                        if (temp > (decimal)19999.99)
+                        {
+                            taxOnGross = (taxOnGross + (decimal)(19999.99 * .20));
+                            temp -= (decimal)19999.99;
+                            Console.WriteLine("Third tax Bracket: " + taxOnGross);
+                            Console.WriteLine("temp value: " + temp);
+
+                            if (temp > (decimal)29999.99)
+                            {
+                                taxOnGross = (taxOnGross + (decimal)(29999.99 * .25));
+                                temp -= (decimal)29999.99;
+                                Console.WriteLine("Fourth tax Bracket: " + taxOnGross);
+                                Console.WriteLine("temp value: " + temp);
+
+                                if (temp > 0)
+                                {
+                                    taxOnGross = taxOnGross + (temp * (decimal).28);
+                                    Console.WriteLine("Last tax Bracket: " + taxOnGross);
+                                    Console.WriteLine("temp value: " + temp);
+                                }
+                            }
+                            else
+                            {
+                                taxOnGross = (taxOnGross + (decimal).25);
+                                Console.WriteLine("Fourth tax Bracket: " + taxOnGross);
+                                Console.WriteLine("temp value: " + temp);
+                            }
+                        }else
+                        {
+                            taxOnGross = (taxOnGross + (decimal).20);
+                            Console.WriteLine("Third tax Bracket: " + taxOnGross);
+                            Console.WriteLine("temp value: " + temp);
+                        }
                     }
                     else
                     {
-                        taxPercentage = (taxPercentage + (decimal));
+                        taxOnGross = (taxOnGross + (decimal).15);
+                        Console.WriteLine("Second tax Bracket: " + taxOnGross);
+                        Console.WriteLine("temp value: " + temp);
                     }
                 }
                 else
                 {
-                    taxPercentage = (taxPercentage + (temp * (decimal).10));
+                    taxOnGross = (taxOnGross + (temp * (decimal).10));
+                    Console.WriteLine("First tax Bracket: " + taxOnGross);
+                    Console.WriteLine("temp value: " + temp);
                 }
             }
-        }
+
+            return taxOnGross;
+
+        }//End graduatedTax
 
 
     }//End DisplayForm
