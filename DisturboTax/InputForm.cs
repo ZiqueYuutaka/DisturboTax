@@ -34,6 +34,7 @@ namespace DisturboTax
         public decimal lossCalc;
         public decimal penalty;
         public decimal owedOrRefund;
+        public decimal taxOnAGI;
     }
 
     public struct taxpayer
@@ -64,7 +65,7 @@ namespace DisturboTax
             exemptionsBox.Text = "3";
 
             grossEarningsBox.Text = "20000.00";
-            withheldBox.Text = "1000.00";
+            withheldBox.Text = "3000.18";
 
             gainsBox.Text = "100.00";
             lossBox.Text = "100.00";

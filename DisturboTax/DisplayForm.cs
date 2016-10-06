@@ -18,6 +18,7 @@ namespace DisturboTax
         static taxpayer[] taxpArray = new taxpayer[SIZE];
         static int tracker = 0;
         taxpayer newTaxp;
+        private decimal percentageOfTaxPaid;
 
         public DisplayForm()
         {
@@ -72,10 +73,36 @@ namespace DisturboTax
             }
 
             Console.WriteLine("AGI: " + (newTaxp.calculatedItems.adjustedGrossIncome = calcAGI()));
-            Console.WriteLine("Tax on AGI: " + graduatedTax());
+            Console.WriteLine("Tax on AGI: " + (newTaxp.calculatedItems.taxOnAGI = graduatedTax()));
 
             //Calculate percentage withheld and penalize if applicable
             //  penalty is 10% of what is leftover
+            percentageOfTaxPaid = taxPercentagePaid();
+            Console.WriteLine("Tax Percentage Paid: " + percentageOfTaxPaid);
+
+            //If the precentageOfTaxPaid is less than 90% add a 10% penalty on the difference
+            if (Math.Round(percentageOfTaxPaid, 2, MidpointRounding.AwayFromZero) < (decimal).90)
+            {
+                newTaxp.calculatedItems.penalty = (newTaxp.calculatedItems.taxOnAGI - newTaxp.taxItems.taxWithheld) * (decimal).10;
+                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.penalty);
+            }
+            
+            if(isThereARefund())//there is a refund
+            {
+                newTaxp.calculatedItems.penalty = 0.00m;
+                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
+                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.penalty);
+                Console.WriteLine("Refund value: " +
+                    Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero));
+            }
+            else //there is tax owed
+            {
+                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
+                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.owedOrRefund);
+                Console.WriteLine("Tax Owed value: " +
+                    Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero));
+            }
+            
 
         }
 
@@ -190,7 +217,32 @@ namespace DisturboTax
             return taxOnGross;
 
         }//End graduatedTax
+        
+        private decimal taxPercentagePaid()
+        {
 
+            return  newTaxp.taxItems.taxWithheld / newTaxp.calculatedItems.taxOnAGI;
+        }
+
+        //Unsure
+        private decimal calcOwedOrRefund()
+        {
+            decimal temp = newTaxp.taxItems.taxWithheld - (newTaxp.calculatedItems.taxOnAGI * .90m);
+            //calculate refund
+            if (temp > 0m)
+            {
+                return temp; //refund amount
+            }
+            else {//calculate tax owed
+
+                return ((newTaxp.calculatedItems.taxOnAGI * .90m) - newTaxp.taxItems.taxWithheld) + newTaxp.calculatedItems.penalty;
+            }
+        }
+
+        private bool isThereARefund()
+        {
+            return newTaxp.taxItems.taxWithheld > newTaxp.calculatedItems.taxOnAGI;
+        }
 
     }//End DisplayForm
 }
