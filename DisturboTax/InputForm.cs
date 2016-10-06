@@ -23,20 +23,6 @@ namespace DisturboTax
         public decimal medicalExpense;
     }
 
-    public struct calculateditems
-    {
-        public decimal adjustedGrossIncome;
-        public decimal reCalc;
-        public decimal exciseCalc;
-        public decimal deductCalc;
-        public decimal medCalc;
-        public decimal gainsCalc;
-        public decimal lossCalc;
-        public decimal penalty;
-        public decimal owedOrRefund;
-        public decimal taxOnAGI;
-    }
-
     public struct taxpayer
     {
         public String name;
@@ -47,7 +33,6 @@ namespace DisturboTax
         public String ssn;
         public int exemptions;
         public taxitems taxItems;
-        public calculateditems calculatedItems;
         
     }
 

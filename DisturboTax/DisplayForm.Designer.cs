@@ -38,7 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.owedRefundBox = new System.Windows.Forms.Label();
+            this.lblOwedRefund = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -126,14 +126,14 @@
             this.label4.TabIndex = 37;
             this.label4.Text = "Penalty:";
             // 
-            // owedRefundBox
+            // lblOwedRefund
             // 
-            this.owedRefundBox.AutoSize = true;
-            this.owedRefundBox.Location = new System.Drawing.Point(203, 257);
-            this.owedRefundBox.Name = "owedRefundBox";
-            this.owedRefundBox.Size = new System.Drawing.Size(59, 13);
-            this.owedRefundBox.TabIndex = 38;
-            this.owedRefundBox.Text = "Tax Owed:";
+            this.lblOwedRefund.AutoSize = true;
+            this.lblOwedRefund.Location = new System.Drawing.Point(203, 257);
+            this.lblOwedRefund.Name = "lblOwedRefund";
+            this.lblOwedRefund.Size = new System.Drawing.Size(59, 13);
+            this.lblOwedRefund.TabIndex = 38;
+            this.lblOwedRefund.Text = "Tax Owed:";
             // 
             // button3
             // 
@@ -183,7 +183,7 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.owedRefundBox);
+            this.Controls.Add(this.lblOwedRefund);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -216,7 +216,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label owedRefundBox;
+        private System.Windows.Forms.Label lblOwedRefund;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
