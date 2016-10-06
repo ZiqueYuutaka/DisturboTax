@@ -14,16 +14,16 @@ namespace DisturboTax
     public partial class DisplayForm : Form
     {
         
-        decimal adjustedGrossIncome;
-        decimal reCalc;
-        decimal exciseCalc;
-        decimal deductCalc;
-        decimal medCalc;
-        decimal gainsCalc;
-        decimal lossCalc;
-        decimal penalty;
-        decimal owedOrRefund;
-        decimal taxOnAGI;
+        private decimal adjustedGrossIncome;
+        private decimal reCalc;
+        private decimal exciseCalc;
+        private decimal deductCalc;
+        private decimal medCalc;
+        private decimal gainsCalc;
+        private decimal lossCalc;
+        private decimal penalty;
+        private decimal owedOrRefund;
+        private decimal taxOnAGI;
 
         struct taxpayerFinal
         {
@@ -34,9 +34,9 @@ namespace DisturboTax
         
 
         private const int SIZE = 10;
-        static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
-        static int tracker = 0;
-        taxpayer newTaxp;
+        private static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
+        private static int tracker = 0;
+        private taxpayer newTaxp;
         private decimal percentageOfTaxPaid;
 
         public DisplayForm()
