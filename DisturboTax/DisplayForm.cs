@@ -77,7 +77,7 @@ namespace DisturboTax
             //Calculate percentage withheld and penalize if applicable
             //  penalty is 10% of what is leftover
 
-        }
+        }//End Form_load
 
         //New Record Button
         private void button1_Click(object sender, EventArgs e)
