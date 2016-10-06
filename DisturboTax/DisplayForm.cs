@@ -18,6 +18,7 @@ namespace DisturboTax
         static taxpayer[] taxpArray = new taxpayer[SIZE];
         static int tracker = 0;
         taxpayer newTaxp;
+        private decimal percentageOfTaxPaid;
 
         public DisplayForm()
         {
@@ -71,11 +72,44 @@ namespace DisturboTax
                 Console.WriteLine(newTaxp.calculatedItems.lossCalc);
             }
 
-            Console.WriteLine("AGI: " + (newTaxp.calculatedItems.adjustedGrossIncome = calcAGI()));
-            Console.WriteLine("Tax on AGI: " + graduatedTax());
+            //FIX: tbWithheld.Text = Math.Round(newTaxp.calculatedItems.taxOnAGI, 2, MidpointRounding.AwayFromZero).ToString();
+            newTaxp.calculatedItems.adjustedGrossIncome = calcAGI();
+            tbAGI.Text = Math.Round(newTaxp.calculatedItems.adjustedGrossIncome, 2, MidpointRounding.AwayFromZero).ToString();
+            newTaxp.calculatedItems.taxOnAGI = graduatedTax();
+            tbCalcTax.Text = Math.Round(newTaxp.calculatedItems.taxOnAGI, 2, MidpointRounding.AwayFromZero).ToString();
 
             //Calculate percentage withheld and penalize if applicable
             //  penalty is 10% of what is leftover
+            percentageOfTaxPaid = taxPercentagePaid();
+            Console.WriteLine("Tax Percentage Paid: " + percentageOfTaxPaid);
+
+            //If the precentageOfTaxPaid is less than 90% add a 10% penalty on the difference
+            if (Math.Round(percentageOfTaxPaid, 2, MidpointRounding.AwayFromZero) < 0.90m)
+            {
+                newTaxp.calculatedItems.penalty = (newTaxp.calculatedItems.taxOnAGI - newTaxp.taxItems.taxWithheld) * 0.10m;
+                tbPenalty.Text = Math.Round(newTaxp.calculatedItems.penalty, 2, MidpointRounding.AwayFromZero).ToString();
+            }
+            else
+            {
+                newTaxp.calculatedItems.penalty = 0.00m;
+                tbPenalty.Text = newTaxp.calculatedItems.penalty.ToString();
+            }
+            
+            if(isThereARefund())//there is a refund
+            {
+                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
+                owedRefundBox.Text = "Refund";
+                tfOwedRefund.Text = Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero)
+                    .ToString();
+            }
+            else //there is tax owed
+            {
+                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
+                owedRefundBox.Text = "Tax Owed:";
+                tfOwedRefund.Text = Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero)
+                    .ToString();
+            }
+            
 
         }//End Form_load
 
@@ -190,7 +224,32 @@ namespace DisturboTax
             return taxOnGross;
 
         }//End graduatedTax
+        
+        private decimal taxPercentagePaid()
+        {
 
+            return  newTaxp.taxItems.taxWithheld / newTaxp.calculatedItems.taxOnAGI;
+        }
+
+        //Unsure
+        private decimal calcOwedOrRefund()
+        {
+            decimal temp = newTaxp.taxItems.taxWithheld - newTaxp.calculatedItems.taxOnAGI;
+            //calculate refund
+            if (temp > 0m)
+            {
+                return temp; //refund amount
+            }
+            else {//calculate tax owed
+
+                return (newTaxp.calculatedItems.taxOnAGI - newTaxp.taxItems.taxWithheld) + newTaxp.calculatedItems.penalty;
+            }
+        }
+
+        private bool isThereARefund()
+        {
+            return newTaxp.taxItems.taxWithheld > newTaxp.calculatedItems.taxOnAGI;
+        }
 
     }//End DisplayForm
 }

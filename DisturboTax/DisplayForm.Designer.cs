@@ -29,18 +29,16 @@
         private void InitializeComponent()
         {
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.tbAGI = new System.Windows.Forms.TextBox();
+            this.tbCalcTax = new System.Windows.Forms.TextBox();
+            this.tbWithheld = new System.Windows.Forms.TextBox();
+            this.tbPenalty = new System.Windows.Forms.TextBox();
+            this.tfOwedRefund = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.owedRefundBox = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -57,47 +55,40 @@
             this.label14.TabIndex = 27;
             this.label14.Text = "DISTURBO TAX 2.0";
             // 
-            // textBox1
+            // tbAGI
             // 
-            this.textBox1.Location = new System.Drawing.Point(341, 146);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(185, 20);
-            this.textBox1.TabIndex = 28;
+            this.tbAGI.Location = new System.Drawing.Point(341, 146);
+            this.tbAGI.Name = "tbAGI";
+            this.tbAGI.Size = new System.Drawing.Size(185, 20);
+            this.tbAGI.TabIndex = 28;
             // 
-            // textBox2
+            // tbCalcTax
             // 
-            this.textBox2.Location = new System.Drawing.Point(341, 172);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(185, 20);
-            this.textBox2.TabIndex = 29;
+            this.tbCalcTax.Location = new System.Drawing.Point(341, 172);
+            this.tbCalcTax.Name = "tbCalcTax";
+            this.tbCalcTax.Size = new System.Drawing.Size(185, 20);
+            this.tbCalcTax.TabIndex = 29;
             // 
-            // textBox3
+            // tbWithheld
             // 
-            this.textBox3.Location = new System.Drawing.Point(341, 198);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(185, 20);
-            this.textBox3.TabIndex = 30;
+            this.tbWithheld.Location = new System.Drawing.Point(341, 198);
+            this.tbWithheld.Name = "tbWithheld";
+            this.tbWithheld.Size = new System.Drawing.Size(185, 20);
+            this.tbWithheld.TabIndex = 30;
             // 
-            // textBox4
+            // tbPenalty
             // 
-            this.textBox4.Location = new System.Drawing.Point(341, 224);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(185, 20);
-            this.textBox4.TabIndex = 31;
+            this.tbPenalty.Location = new System.Drawing.Point(341, 224);
+            this.tbPenalty.Name = "tbPenalty";
+            this.tbPenalty.Size = new System.Drawing.Size(185, 20);
+            this.tbPenalty.TabIndex = 31;
             // 
-            // textBox5
+            // tfOwedRefund
             // 
-            this.textBox5.Location = new System.Drawing.Point(341, 250);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(185, 20);
-            this.textBox5.TabIndex = 32;
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(341, 276);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(185, 20);
-            this.textBox6.TabIndex = 33;
+            this.tfOwedRefund.Location = new System.Drawing.Point(341, 250);
+            this.tfOwedRefund.Name = "tfOwedRefund";
+            this.tfOwedRefund.Size = new System.Drawing.Size(185, 20);
+            this.tfOwedRefund.TabIndex = 32;
             // 
             // label1
             // 
@@ -135,23 +126,14 @@
             this.label4.TabIndex = 37;
             this.label4.Text = "Penalty:";
             // 
-            // label5
+            // owedRefundBox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(203, 257);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 13);
-            this.label5.TabIndex = 38;
-            this.label5.Text = "Tax Owed:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(203, 283);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(127, 13);
-            this.label6.TabIndex = 39;
-            this.label6.Text = "Refund Due to Taxpayer:";
+            this.owedRefundBox.AutoSize = true;
+            this.owedRefundBox.Location = new System.Drawing.Point(203, 257);
+            this.owedRefundBox.Name = "owedRefundBox";
+            this.owedRefundBox.Size = new System.Drawing.Size(59, 13);
+            this.owedRefundBox.TabIndex = 38;
+            this.owedRefundBox.Text = "Tax Owed:";
             // 
             // button3
             // 
@@ -201,18 +183,16 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.owedRefundBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tfOwedRefund);
+            this.Controls.Add(this.tbPenalty);
+            this.Controls.Add(this.tbWithheld);
+            this.Controls.Add(this.tbCalcTax);
+            this.Controls.Add(this.tbAGI);
             this.Controls.Add(this.label14);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -227,18 +207,16 @@
         #endregion
 
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox tbAGI;
+        private System.Windows.Forms.TextBox tbCalcTax;
+        private System.Windows.Forms.TextBox tbWithheld;
+        private System.Windows.Forms.TextBox tbPenalty;
+        private System.Windows.Forms.TextBox tfOwedRefund;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label owedRefundBox;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
