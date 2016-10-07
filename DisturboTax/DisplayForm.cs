@@ -103,6 +103,7 @@ namespace DisturboTax
                 }
 
                 taxpArray[tracker++] = final;
+                sortArray();
             }
         }
 
@@ -348,7 +349,7 @@ namespace DisturboTax
         private void button2_Click(object sender, EventArgs e)
         {
             //close this window
-            this.Close();
+            Close();
 
             //Open a dialog window that displays information in a sorted way
             DisplayRecords displayRecords = new DisplayRecords();
@@ -367,22 +368,21 @@ namespace DisturboTax
             }
         }
 
-        /*private void sortArray()
+        private void sortArray()
         {
             int index = tracker - 1;
             Console.WriteLine("Index value: " + index);
-            for(int i = index; index > 0; i++)
+            for(; index > 0; index--)
             {
-                Console.WriteLine("Index " + i + ": " + taxpArray[i]);
-                Console.WriteLine("Index " + (i-1) + ": " + taxpArray[i-1]);
 
-                if (taxpArray[i].ssn.CompareTo(taxpArray[i-1].ssn) == -1)
+                if (taxpArray[index].ssn.CompareTo(taxpArray[index-1].ssn) == -1)
                 {
-                    taxpayerFinal temp = taxpArray[i];
-                    taxpArray[i] = taxpArray[i - 1];
-                    taxpArray[i] = temp;
+
+                    taxpayerFinal temp = taxpArray[index];
+                    taxpArray[index] = taxpArray[index - 1];
+                    taxpArray[index-1] = temp;
                 }
             }
-        }*/
+        }
     }//End DisplayForm
 }

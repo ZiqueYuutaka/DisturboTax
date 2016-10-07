@@ -53,7 +53,7 @@ namespace DisturboTax
             cityBox.Text = "City";
             cobState.SelectedIndex = 8;
             zipBox.Text = "12345";
-            ssnBox.Text = "1234567890";
+            ssnBox.Text = "4234567890";
             exemptionsBox.Text = "3";
 
             grossEarningsBox.Text = "20000.00";
@@ -75,10 +75,10 @@ namespace DisturboTax
             cityBox.Text = "City";
             cobState.SelectedIndex = 8;
             zipBox.Text = "12345";
-            ssnBox.Text = "345678912";
+            ssnBox.Text = "6456789120";
             exemptionsBox.Text = "3";
 
-            grossEarningsBox.Text = "100.00";
+            grossEarningsBox.Text = "10000000.00";
             withheldBox.Text = "1234.00";
 
             gainsBox.Text = "123.00";
@@ -141,7 +141,7 @@ namespace DisturboTax
                     enableViewRecordButton();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Console.WriteLine(ex.StackTrace);
                 MessageBox.Show("An error has occured. Please review data", "Error in Field");
