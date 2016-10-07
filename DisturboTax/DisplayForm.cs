@@ -11,12 +11,7 @@ using System.Windows.Forms;
 namespace DisturboTax
 {
 
-    public struct taxpayerFinal
-    {
-        public String ssn;
-        public String name;
-        public decimal owedOrRefunded;
-    }
+    
 
     public partial class DisplayForm : Form
     {
@@ -34,7 +29,7 @@ namespace DisturboTax
         
         private const int SIZE = 10;
         static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
-        private static int tracker = 0;
+        public static int tracker = 0;
         private taxpayer newTaxp;
         private decimal percentageOfTaxPaid;
 
@@ -51,6 +46,7 @@ namespace DisturboTax
             if(tracker == 0)
             {
                 button2.Enabled = false;
+                initializeArray();
             }else
             {
                 button2.Enabled = true;
@@ -58,9 +54,19 @@ namespace DisturboTax
 
             calculateFromTaxItems();
 
+            if (adjustedGrossIncome < 0)
+            {
+                MessageBox.Show("There was an error with this record.\n" +
+                                "AGI value: " + adjustedGrossIncome + "\n" +
+                                "Please check record and refile or seek legal assistance.", "AGI Error");
+                this.Close();
+            }
+
             roundToWholeDollar();
 
             assignToTextBox();
+
+            saveData();
 
         }//End Form_load
 
@@ -70,8 +76,7 @@ namespace DisturboTax
             //Save data
             if(tracker < SIZE)
             {
-                saveData();
-                this.Close();
+                Close();
             }
             else
             {
@@ -82,19 +87,24 @@ namespace DisturboTax
 
         private void saveData()
         {
-            taxpayerFinal final = new taxpayerFinal();
-            final.name = newTaxp.name;
-            final.ssn = newTaxp.ssn;
-            if(lblOwedRefund.Text.Equals("Tax Owed:"))
+            if(tracker < SIZE)
             {
-                final.owedOrRefunded = -1m * owedOrRefund;
-            }
-            else
-            {
-                final.owedOrRefunded = owedOrRefund;
-            }
+                taxpayerFinal final = new taxpayerFinal();
+                final.name = newTaxp.name;
+                Console.WriteLine("name: " + final.name);
+                final.ssn = newTaxp.ssn;
+                if (lblOwedRefund.Text.Equals("Tax Owed:"))
+                {
+                    final.owedOrRefunded = (-1m * owedOrRefund);
+                }
+                else
+                {
+                    final.owedOrRefunded = owedOrRefund;
+                }
 
-            taxpArray[tracker++] = final;
+                taxpArray[tracker++] = final;
+                sortArray();
+            }
         }
 
         private decimal percentageCalc(decimal val, double percentage)
@@ -263,7 +273,7 @@ namespace DisturboTax
                 Console.WriteLine(lossCalc);
             }
 
-            
+
             adjustedGrossIncome = calcAGI();
             
             taxOnAGI = graduatedTax();
@@ -293,6 +303,7 @@ namespace DisturboTax
             else //there is tax owed
             {
                 owedOrRefund = calcOwedOrRefund();
+                Console.WriteLine("owedOrRefund: " + owedOrRefund);
                 lblOwedRefund.Text = "Tax Owed:";
                 
             }
@@ -338,11 +349,40 @@ namespace DisturboTax
         private void button2_Click(object sender, EventArgs e)
         {
             //close this window
-            this.Close();
+            Close();
 
             //Open a dialog window that displays information in a sorted way
             DisplayRecords displayRecords = new DisplayRecords();
             displayRecords.ShowDialog();
+        }
+
+        private void initializeArray()
+        {
+            taxpayerFinal temp = new taxpayerFinal();
+            temp.name = "";
+            temp.ssn = "";
+            temp.owedOrRefunded = 0.00m;
+            for (int i = 0; i < SIZE; i++)
+            {
+                taxpArray[i] = temp;
+            }
+        }
+
+        private void sortArray()
+        {
+            int index = tracker - 1;
+            Console.WriteLine("Index value: " + index);
+            for(; index > 0; index--)
+            {
+
+                if (taxpArray[index].ssn.CompareTo(taxpArray[index-1].ssn) == -1)
+                {
+
+                    taxpayerFinal temp = taxpArray[index];
+                    taxpArray[index] = taxpArray[index - 1];
+                    taxpArray[index-1] = temp;
+                }
+            }
         }
     }//End DisplayForm
 }

@@ -36,10 +36,16 @@ namespace DisturboTax
         
     }
 
-    
+    public struct taxpayerFinal
+    {
+        public String ssn;
+        public String name;
+        public decimal owedOrRefunded;
+    }
 
     public partial class InputForm : Form
     {
+
         private void DEBUGFORM()
         {
             nameBox.Text = "John";
@@ -47,7 +53,7 @@ namespace DisturboTax
             cityBox.Text = "City";
             cobState.SelectedIndex = 8;
             zipBox.Text = "12345";
-            ssnBox.Text = "1234567890";
+            ssnBox.Text = "4234567890";
             exemptionsBox.Text = "3";
 
             grossEarningsBox.Text = "20000.00";
@@ -69,18 +75,18 @@ namespace DisturboTax
             cityBox.Text = "City";
             cobState.SelectedIndex = 8;
             zipBox.Text = "12345";
-            ssnBox.Text = "1234567890";
+            ssnBox.Text = "6456789120";
             exemptionsBox.Text = "3";
 
-            grossEarningsBox.Text = "1234.45";
-            withheldBox.Text = "1234.0";
+            grossEarningsBox.Text = "10000000.00";
+            withheldBox.Text = "1234.00";
 
             gainsBox.Text = "123.00";
             lossBox.Text = "123.00";
-            exciseBox.Text = "0.0";
+            exciseBox.Text = "0.00";
 
-            reBox.Text = "0.0";
-            medicalBox.Text = "0.0";
+            reBox.Text = "0.00";
+            medicalBox.Text = "0.00";
             button1.Focus();
         }
 
@@ -96,11 +102,13 @@ namespace DisturboTax
             loadStates();
             if (true)
                 DEBUGFORM();
+            enableViewRecordButton();
         }
 
         //Calculate button
         private void button1_Click(object sender, EventArgs e)
         {
+            Console.WriteLine("Beginning form parsing");
             taxp.name = nameBox.Text;
             taxp.address = addressBox.Text;
             taxp.city = cityBox.Text;
@@ -108,6 +116,7 @@ namespace DisturboTax
             
             try
             {
+                Console.WriteLine("Checking if valid data");
                 if (isValidData())
                 {
                     taxp.zipcode = zipBox.Text;
@@ -129,10 +138,12 @@ namespace DisturboTax
                     display.ShowDialog();
                     clearFields();
                     DEBUGFORMTWO();
+                    enableViewRecordButton();
                 }
             }
             catch (Exception)
             {
+                //Console.WriteLine(ex.StackTrace);
                 MessageBox.Show("An error has occured. Please review data", "Error in Field");
                 nameBox.Focus();
             }
@@ -190,14 +201,14 @@ namespace DisturboTax
 
                    isPresent(zipBox, "Zipcode") &&
                    isCorrectLength(zipBox, "Zipcode", 5) &&
-                   isInt32(zipBox, "Zipcode") &&
+                   isInt64(zipBox, "Zipcode") &&
 
                    isPresent(ssnBox, "SSN") &&
                    isCorrectLength(ssnBox, "SSN", 10) &&
-                   isInt32(ssnBox, "SSN") &&
+                   isInt64(ssnBox, "SSN") &&
 
                    isPresent(exemptionsBox, "Exemptions") &&
-                   isInt32(exemptionsBox, "Exemptions") &&
+                   isInt64(exemptionsBox, "Exemptions") &&
                    isInRange(exemptionsBox, 0, 10) &&
 
                    isPresent(grossEarningsBox, "Gross Earnings") &&
@@ -278,11 +289,11 @@ namespace DisturboTax
             return true;
         }
 
-        private bool isInt32(TextBox textBox, String name)
+        private bool isInt64(TextBox textBox, String name)
         {
             try
             {
-                Convert.ToInt32(textBox.Text);
+                Convert.ToInt64(textBox.Text);
                 return true;
             }
             catch (FormatException)
@@ -307,8 +318,85 @@ namespace DisturboTax
             return true;
         }
 
+        private void enableViewRecordButton()
+        {
+            if (DisplayForm.tracker == 0)
+            {
+                btnViewRecs.Enabled = false;
+            }
+            else
+            {
+                btnViewRecs.Enabled = true;
+            }
+        }
+
         public static taxpayer getTaxpayerInfo() { return taxp; }
 
-        
+        private void btnViewRecs_Click(object sender, EventArgs e)
+        {
+            DisplayRecords displayRecords = new DisplayRecords();
+            displayRecords.ShowDialog();
+            
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.DialogResult result, saveDataWindow;
+            result = MessageBox.Show("Are you sure you want to EXIT?", "Exiting", MessageBoxButtons.YesNo, MessageBoxIcon.
+                Question);
+
+            if(result == System.Windows.Forms.DialogResult.Yes)
+            {
+                if (isAnyPresent())
+                {
+                    saveDataWindow = MessageBox.Show("You have data entered in this form. Do you still want to exit?", "Save data",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if(saveDataWindow == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        Close();
+                    }else
+                    {
+                        return; //Get out of exiting program
+                    }
+                }else
+                {
+                    Close();
+                }
+                    
+            }else
+            {
+                
+                nameBox.Focus();
+            }
+        }
+
+        private bool isAnyPresent()
+        {
+            return isPresent(nameBox, "Name") ||
+
+                   isPresent(addressBox, "Address") ||
+
+                   isPresent(cityBox, "City") ||
+
+                   isPresent(zipBox, "Zipcode") ||
+
+                   isPresent(ssnBox, "SSN") ||
+
+                   isPresent(exemptionsBox, "Exemptions") ||
+
+                   isPresent(grossEarningsBox, "Gross Earnings") ||
+
+                   isPresent(withheldBox, "Tax Withheld") ||
+
+                   isPresent(gainsBox, "Capital Gains") ||
+
+                   isPresent(lossBox, "Capital Loss") ||
+
+                   isPresent(exciseBox, "Excise Tax") ||
+
+                   isPresent(reBox, "Real Estate Tax") ||
+
+                   isPresent(medicalBox, "Medical Expenses");
+        }
     }
 }

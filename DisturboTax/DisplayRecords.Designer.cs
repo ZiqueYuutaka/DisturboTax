@@ -35,6 +35,9 @@
             this.tbOR = new System.Windows.Forms.TextBox();
             this.tbSsn = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
+            this.btnClearRec = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label14
@@ -95,11 +98,44 @@
             this.tbName.Size = new System.Drawing.Size(185, 20);
             this.tbName.TabIndex = 39;
             // 
+            // btnClearRec
+            // 
+            this.btnClearRec.Location = new System.Drawing.Point(313, 419);
+            this.btnClearRec.Name = "btnClearRec";
+            this.btnClearRec.Size = new System.Drawing.Size(178, 44);
+            this.btnClearRec.TabIndex = 48;
+            this.btnClearRec.Text = "Clear Records";
+            this.btnClearRec.UseVisualStyleBackColor = true;
+            // 
+            // btnNext
+            // 
+            this.btnNext.Location = new System.Drawing.Point(549, 419);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(178, 44);
+            this.btnNext.TabIndex = 49;
+            this.btnNext.Text = "Next";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.Location = new System.Drawing.Point(73, 419);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(178, 44);
+            this.btnPrevious.TabIndex = 47;
+            this.btnPrevious.Text = "Previous";
+            this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
+            // 
             // DisplayRecords
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 517);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnClearRec);
+            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.btnPrevious);
             this.Controls.Add(this.lblOR);
             this.Controls.Add(this.lblSsn);
             this.Controls.Add(this.lblName);
@@ -107,6 +143,8 @@
             this.Controls.Add(this.tbSsn);
             this.Controls.Add(this.tbName);
             this.Controls.Add(this.label14);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DisplayRecords";
             this.Text = "DisplayRecords";
             this.Load += new System.EventHandler(this.DisplayRecords_Load);
@@ -124,5 +162,8 @@
         private System.Windows.Forms.TextBox tbOR;
         private System.Windows.Forms.TextBox tbSsn;
         private System.Windows.Forms.TextBox tbName;
+        private System.Windows.Forms.Button btnClearRec;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnPrevious;
     }
 }

@@ -55,11 +55,12 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnViewRecs = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.gainsBox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.cobState = new System.Windows.Forms.ComboBox();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // nameBox
@@ -283,14 +284,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btnViewRecs
             // 
-            this.button2.Location = new System.Drawing.Point(549, 419);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(178, 44);
-            this.button2.TabIndex = 29;
-            this.button2.Text = "View Records";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnViewRecs.Location = new System.Drawing.Point(549, 419);
+            this.btnViewRecs.Name = "btnViewRecs";
+            this.btnViewRecs.Size = new System.Drawing.Size(178, 44);
+            this.btnViewRecs.TabIndex = 29;
+            this.btnViewRecs.Text = "View Records";
+            this.btnViewRecs.UseVisualStyleBackColor = true;
+            this.btnViewRecs.Click += new System.EventHandler(this.btnViewRecs_Click);
             // 
             // button3
             // 
@@ -327,16 +329,29 @@
             this.cobState.Size = new System.Drawing.Size(185, 21);
             this.cobState.TabIndex = 32;
             // 
+            // btnExit
+            // 
+            this.btnExit.BackColor = System.Drawing.Color.Tomato;
+            this.btnExit.Location = new System.Drawing.Point(731, 12);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(60, 44);
+            this.btnExit.TabIndex = 33;
+            this.btnExit.Text = "EXIT";
+            this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 517);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.cobState);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.gainsBox);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnViewRecs);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label13);
@@ -403,11 +418,12 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnViewRecs;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox gainsBox;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ComboBox cobState;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 
