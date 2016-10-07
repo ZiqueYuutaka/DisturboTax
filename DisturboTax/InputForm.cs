@@ -349,9 +349,9 @@ namespace DisturboTax
             {
                 if (isAnyPresent())
                 {
-                    saveDataWindow = MessageBox.Show("You have data entered in this form. Do you still want to exit?", "Save data",
+                    saveDataWindow = MessageBox.Show("You have data entered in this form. Save data?", "Save data",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if(saveDataWindow == System.Windows.Forms.DialogResult.Yes)
+                    if(saveDataWindow == System.Windows.Forms.DialogResult.No)
                     {
                         Close();
                     }else

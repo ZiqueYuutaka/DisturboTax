@@ -22,7 +22,7 @@ namespace DisturboTax
 
         private void DisplayRecords_Load(object sender, EventArgs e)
         {
-            records = DisplayForm.getArray();
+            records = DisplayForm.taxpArray;
 
             //Sort array
 
@@ -68,6 +68,8 @@ namespace DisturboTax
 
         private void enableDisableButton(Button btn, int index, int extrema)
         {
+            Console.WriteLine("index in function: " + index);
+            Console.WriteLine("tracker in function: " + extrema);
             if(index == extrema)
             {
                 btn.Enabled = false;
@@ -87,6 +89,58 @@ namespace DisturboTax
                 enableDisableButton(btnNext, 9, 9);
             }
             displayRecord(records[index]);
+        }
+
+        private void btnClearRec_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.DialogResult clearRecord;
+            clearRecord = MessageBox.Show("You are about to delete a record.  Continue?", "Delete Record", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if(clearRecord == System.Windows.Forms.DialogResult.Yes)
+            {
+                reorderArray();
+                DisplayForm.taxpArray = records;
+                DisplayForm.tracker--;
+                if(index < 0)
+                    index--;
+                Console.WriteLine("index: " + index);
+                Console.WriteLine("tracker: " + DisplayForm.tracker);
+                enableDisableButton(btnNext, index, DisplayForm.tracker);
+                enableDisableButton(btnPrevious, index, 0);
+                tbName.Text = records[index].name;
+                tbSsn.Text = records[index].ssn;
+                if(records[index].owedOrRefunded == 0.00m)
+                {
+                    tbOR.Text = "";
+                }
+                else
+                {
+                    tbOR.Text = records[index].owedOrRefunded.ToString("c");
+                }
+            }
+            if (DisplayForm.tracker == 0)
+            {
+                btnClearRec.Enabled = false;
+            }
+            else
+            {
+                btnClearRec.Enabled = true;
+
+            }
+            
+        }
+
+        private void reorderArray()
+        {
+            for(int i = index; i < DisplayForm.tracker; i++)
+            {
+                records[i] = records[index + 1];
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

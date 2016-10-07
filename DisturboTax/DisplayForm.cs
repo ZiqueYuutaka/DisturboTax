@@ -28,7 +28,7 @@ namespace DisturboTax
         private decimal taxOnAGI;
         
         private const int SIZE = 10;
-        static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
+        public static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
         public static int tracker = 0;
         private taxpayer newTaxp;
         private decimal percentageOfTaxPaid;
@@ -340,10 +340,10 @@ namespace DisturboTax
             //tfOwedRefund.Enabled = false;
         }
 
-        public static taxpayerFinal[] getArray()
+        /*public static taxpayerFinal[] getArray()
         {
             return taxpArray;
-        }
+        }*/
         
         //View Records Button
         private void button2_Click(object sender, EventArgs e)

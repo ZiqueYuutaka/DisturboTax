@@ -38,6 +38,7 @@
             this.btnClearRec = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnPrevious = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label14
@@ -106,6 +107,7 @@
             this.btnClearRec.TabIndex = 48;
             this.btnClearRec.Text = "Clear Records";
             this.btnClearRec.UseVisualStyleBackColor = true;
+            this.btnClearRec.Click += new System.EventHandler(this.btnClearRec_Click);
             // 
             // btnNext
             // 
@@ -127,12 +129,24 @@
             this.btnPrevious.UseVisualStyleBackColor = true;
             this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
             // 
+            // btnClose
+            // 
+            this.btnClose.BackColor = System.Drawing.Color.Tomato;
+            this.btnClose.Location = new System.Drawing.Point(731, 12);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(60, 44);
+            this.btnClose.TabIndex = 50;
+            this.btnClose.Text = "CLOSE";
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // DisplayRecords
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 517);
             this.ControlBox = false;
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnClearRec);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
@@ -165,5 +179,6 @@
         private System.Windows.Forms.Button btnClearRec;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
+        private System.Windows.Forms.Button btnClose;
     }
 }
