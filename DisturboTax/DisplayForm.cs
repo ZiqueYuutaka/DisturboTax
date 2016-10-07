@@ -11,6 +11,13 @@ using System.Windows.Forms;
 namespace DisturboTax
 {
 
+    public struct taxpayerFinal
+    {
+        public String ssn;
+        public String name;
+        public decimal owedOrRefunded;
+    }
+
     public partial class DisplayForm : Form
     {
         
@@ -24,15 +31,7 @@ namespace DisturboTax
         private decimal penalty;
         private decimal owedOrRefund;
         private decimal taxOnAGI;
-
-        struct taxpayerFinal
-        {
-            public String ssn;
-            public String name;
-            public decimal owedOrRefunded;
-        }
         
-
         private const int SIZE = 10;
         static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
         private static int tracker = 0;
@@ -48,6 +47,14 @@ namespace DisturboTax
         {
             newTaxp = InputForm.getTaxpayerInfo();
             label7.Text = "Calculated tax information for:\n" + newTaxp.name;
+
+            if(tracker == 0)
+            {
+                button2.Enabled = false;
+            }else
+            {
+                button2.Enabled = true;
+            }
 
             calculateFromTaxItems();
 
@@ -81,12 +88,10 @@ namespace DisturboTax
             if(lblOwedRefund.Text.Equals("Tax Owed:"))
             {
                 final.owedOrRefunded = -1m * owedOrRefund;
-                Console.WriteLine("Money owed saved");
             }
             else
             {
                 final.owedOrRefunded = owedOrRefund;
-                Console.WriteLine("Money refunded saved");
             }
 
             taxpArray[tracker++] = final;
@@ -185,8 +190,13 @@ namespace DisturboTax
         
         private decimal taxPercentagePaid()
         {
-
-            return  newTaxp.taxItems.taxWithheld / taxOnAGI;
+            if(taxOnAGI <= 0)
+            {
+                return 0.00m;
+            }else
+            {
+                return newTaxp.taxItems.taxWithheld / taxOnAGI;
+            } 
         }
 
         //Unsure
@@ -319,7 +329,7 @@ namespace DisturboTax
             //tfOwedRefund.Enabled = false;
         }
 
-        static taxpayerFinal[] getArray()
+        public static taxpayerFinal[] getArray()
         {
             return taxpArray;
         }
@@ -328,8 +338,11 @@ namespace DisturboTax
         private void button2_Click(object sender, EventArgs e)
         {
             //close this window
+            this.Close();
 
             //Open a dialog window that displays information in a sorted way
+            DisplayRecords displayRecords = new DisplayRecords();
+            displayRecords.ShowDialog();
         }
     }//End DisplayForm
 }

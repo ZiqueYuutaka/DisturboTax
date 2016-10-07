@@ -18,3 +18,4 @@ C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.I
 C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.DisplayForm.resources
 C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.Properties.Resources.resources
 C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.csproj.GenerateResource.Cache
+C:\Users\Zique Yuutaka\Documents\DisturboTax\DisturboTax\obj\Debug\DisturboTax.DisplayRecords.resources
