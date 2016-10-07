@@ -11,13 +11,26 @@ using System.Windows.Forms;
 namespace DisturboTax
 {
 
+    
+
     public partial class DisplayForm : Form
     {
         
+        private decimal adjustedGrossIncome;
+        private decimal reCalc;
+        private decimal exciseCalc;
+        private decimal deductCalc;
+        private decimal medCalc;
+        private decimal gainsCalc;
+        private decimal lossCalc;
+        private decimal penalty;
+        private decimal owedOrRefund;
+        private decimal taxOnAGI;
+        
         private const int SIZE = 10;
-        static taxpayer[] taxpArray = new taxpayer[SIZE];
-        static int tracker = 0;
-        taxpayer newTaxp;
+        static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
+        public static int tracker = 0;
+        private taxpayer newTaxp;
         private decimal percentageOfTaxPaid;
 
         public DisplayForm()
@@ -30,81 +43,32 @@ namespace DisturboTax
             newTaxp = InputForm.getTaxpayerInfo();
             label7.Text = "Calculated tax information for:\n" + newTaxp.name;
 
-            //Calculate each deduction at 1000
-            if(newTaxp.exemptions != 0)
+            if(tracker == 0)
             {
-                newTaxp.calculatedItems.deductCalc = (decimal)(newTaxp.exemptions * 1000.00);
-                Console.WriteLine(newTaxp.calculatedItems.deductCalc);
+                button2.Enabled = false;
+                initializeArray();
+            }else
+            {
+                button2.Enabled = true;
             }
 
-            //Calculate Real Estate Tax
-            if(newTaxp.taxItems.realEstate != 0)
+            calculateFromTaxItems();
+
+            if (adjustedGrossIncome < 0)
             {
-                newTaxp.calculatedItems.reCalc = percentageCalc(newTaxp.taxItems.realEstate, 0.25);
-                Console.WriteLine(newTaxp.calculatedItems.reCalc);
+                MessageBox.Show("There was an error with this record.\n" +
+                                "AGI value: " + adjustedGrossIncome + "\n" +
+                                "Please check record and refile or seek legal assistance.", "AGI Error");
+                this.Close();
             }
 
-            //Calculate Excise Tax
-            if(newTaxp.taxItems.excise != 0)
-            {
-                newTaxp.calculatedItems.exciseCalc = percentageCalc(newTaxp.taxItems.excise, 0.25);
-                Console.WriteLine(newTaxp.calculatedItems.exciseCalc);
-            }
-                
-            //Deduction for medical
-            if(newTaxp.taxItems.medicalExpense != 0)
-            {
-                newTaxp.calculatedItems.medCalc = percentageCalc(newTaxp.taxItems.medicalExpense, 0.08);
-                Console.WriteLine(newTaxp.calculatedItems.medCalc);
-            }
+            roundToWholeDollar();
 
-            //Add 15% for capital gains to gross(if present)
-            if(newTaxp.taxItems.gains != 0)
-            {
-                newTaxp.calculatedItems.gainsCalc = percentageCalc(newTaxp.taxItems.gains, 0.15);
-                Console.WriteLine(newTaxp.calculatedItems.gainsCalc);
-            }
+            assignToTextBox();
 
-            //Sub 15% for capital loss to gross(if present)
-            if (newTaxp.taxItems.loss != 0)
-            {
-                newTaxp.calculatedItems.lossCalc = percentageCalc(newTaxp.taxItems.loss, 0.15);
-                Console.WriteLine(newTaxp.calculatedItems.lossCalc);
-            }
+            saveData();
 
-            Console.WriteLine("AGI: " + (newTaxp.calculatedItems.adjustedGrossIncome = calcAGI()));
-            Console.WriteLine("Tax on AGI: " + (newTaxp.calculatedItems.taxOnAGI = graduatedTax()));
-
-            //Calculate percentage withheld and penalize if applicable
-            //  penalty is 10% of what is leftover
-            percentageOfTaxPaid = taxPercentagePaid();
-            Console.WriteLine("Tax Percentage Paid: " + percentageOfTaxPaid);
-
-            //If the precentageOfTaxPaid is less than 90% add a 10% penalty on the difference
-            if (Math.Round(percentageOfTaxPaid, 2, MidpointRounding.AwayFromZero) < (decimal).90)
-            {
-                newTaxp.calculatedItems.penalty = (newTaxp.calculatedItems.taxOnAGI - newTaxp.taxItems.taxWithheld) * (decimal).10;
-                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.penalty);
-            }
-            
-            if(isThereARefund())//there is a refund
-            {
-                newTaxp.calculatedItems.penalty = 0.00m;
-                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
-                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.penalty);
-                Console.WriteLine("Refund value: " +
-                    Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero));
-            }
-            else //there is tax owed
-            {
-                newTaxp.calculatedItems.owedOrRefund = calcOwedOrRefund();
-                Console.WriteLine("Penalty: " + newTaxp.calculatedItems.owedOrRefund);
-                Console.WriteLine("Tax Owed value: " +
-                    Math.Round(newTaxp.calculatedItems.owedOrRefund, 2, MidpointRounding.AwayFromZero));
-            }
-            
-
-        }
+        }//End Form_load
 
         //New Record Button
         private void button1_Click(object sender, EventArgs e)
@@ -112,8 +76,7 @@ namespace DisturboTax
             //Save data
             if(tracker < SIZE)
             {
-                saveData();
-                this.Close();
+                Close();
             }
             else
             {
@@ -124,7 +87,23 @@ namespace DisturboTax
 
         private void saveData()
         {
-            taxpArray[tracker++] = newTaxp;
+            if(tracker < SIZE)
+            {
+                taxpayerFinal final = new taxpayerFinal();
+                final.name = newTaxp.name;
+                Console.WriteLine("name: " + final.name);
+                final.ssn = newTaxp.ssn;
+                if (lblOwedRefund.Text.Equals("Tax Owed:"))
+                {
+                    final.owedOrRefunded = (-1m * owedOrRefund);
+                }
+                else
+                {
+                    final.owedOrRefunded = owedOrRefund;
+                }
+
+                taxpArray[tracker++] = final;
+            }
         }
 
         private decimal percentageCalc(decimal val, double percentage)
@@ -135,80 +114,80 @@ namespace DisturboTax
         private decimal calcAGI()
         {
             return newTaxp.taxItems.grossEarn -
-                   newTaxp.calculatedItems.deductCalc -
-                   newTaxp.calculatedItems.reCalc -
-                   newTaxp.calculatedItems.exciseCalc -
-                   newTaxp.calculatedItems.medCalc +
-                   newTaxp.calculatedItems.gainsCalc -
-                   newTaxp.calculatedItems.lossCalc;
+                   deductCalc -
+                   reCalc -
+                   exciseCalc -
+                   medCalc +
+                   gainsCalc -
+                   lossCalc;
         }
 
         private decimal graduatedTax()
         {
             decimal taxOnGross = 0;
             
-            if(newTaxp.calculatedItems.adjustedGrossIncome > 0)
+            if(adjustedGrossIncome > 0)
             {
-                decimal temp = newTaxp.calculatedItems.adjustedGrossIncome;
+                decimal temp = adjustedGrossIncome;
                 
-                if(temp > (decimal)999.99)
+                if(temp > 999.99m)
                 {
                     taxOnGross = (taxOnGross + (decimal)(999.99 * .10));
-                    temp -= (decimal)999.99;
+                    temp -= 999.99m;
                     Console.WriteLine("First tax Bracket: " + taxOnGross);
                     Console.WriteLine("temp value: " + temp);
 
-                    if(temp > (decimal)9999.99)
+                    if(temp > 9999.99m)
                     {
                         taxOnGross = (taxOnGross + (decimal)(9999.99 * .15));
-                        temp -= (decimal)9999.99;
+                        temp -= 9999.99m;
                         Console.WriteLine("Second tax Bracket: " + taxOnGross);
                         Console.WriteLine("temp value: " + temp);
 
-                        if (temp > (decimal)19999.99)
+                        if (temp > 19999.99m)
                         {
                             taxOnGross = (taxOnGross + (decimal)(19999.99 * .20));
-                            temp -= (decimal)19999.99;
+                            temp -= 19999.99m;
                             Console.WriteLine("Third tax Bracket: " + taxOnGross);
                             Console.WriteLine("temp value: " + temp);
 
-                            if (temp > (decimal)29999.99)
+                            if (temp > 29999.99m)
                             {
                                 taxOnGross = (taxOnGross + (decimal)(29999.99 * .25));
-                                temp -= (decimal)29999.99;
+                                temp -= 29999.99m;
                                 Console.WriteLine("Fourth tax Bracket: " + taxOnGross);
                                 Console.WriteLine("temp value: " + temp);
 
                                 if (temp > 0)
                                 {
-                                    taxOnGross = taxOnGross + (temp * (decimal).28);
+                                    taxOnGross = taxOnGross + (temp * 0.28m);
                                     Console.WriteLine("Last tax Bracket: " + taxOnGross);
                                     Console.WriteLine("temp value: " + temp);
                                 }
                             }
                             else
                             {
-                                taxOnGross = (taxOnGross + (decimal).25);
+                                taxOnGross = (taxOnGross + 0.25m);
                                 Console.WriteLine("Fourth tax Bracket: " + taxOnGross);
                                 Console.WriteLine("temp value: " + temp);
                             }
                         }else
                         {
-                            taxOnGross = (taxOnGross + (decimal).20);
+                            taxOnGross = (taxOnGross + 0.20m);
                             Console.WriteLine("Third tax Bracket: " + taxOnGross);
                             Console.WriteLine("temp value: " + temp);
                         }
                     }
                     else
                     {
-                        taxOnGross = (taxOnGross + (decimal).15);
+                        taxOnGross = (taxOnGross + 0.15m);
                         Console.WriteLine("Second tax Bracket: " + taxOnGross);
                         Console.WriteLine("temp value: " + temp);
                     }
                 }
                 else
                 {
-                    taxOnGross = (taxOnGross + (temp * (decimal).10));
+                    taxOnGross = (taxOnGross + (temp * 0.10m));
                     Console.WriteLine("First tax Bracket: " + taxOnGross);
                     Console.WriteLine("temp value: " + temp);
                 }
@@ -220,29 +199,190 @@ namespace DisturboTax
         
         private decimal taxPercentagePaid()
         {
-
-            return  newTaxp.taxItems.taxWithheld / newTaxp.calculatedItems.taxOnAGI;
+            if(taxOnAGI <= 0)
+            {
+                return 0.00m;
+            }else
+            {
+                return newTaxp.taxItems.taxWithheld / taxOnAGI;
+            } 
         }
 
         //Unsure
         private decimal calcOwedOrRefund()
         {
-            decimal temp = newTaxp.taxItems.taxWithheld - (newTaxp.calculatedItems.taxOnAGI * .90m);
+            decimal temp = newTaxp.taxItems.taxWithheld - taxOnAGI;
             //calculate refund
             if (temp > 0m)
             {
                 return temp; //refund amount
             }
             else {//calculate tax owed
-
-                return ((newTaxp.calculatedItems.taxOnAGI * .90m) - newTaxp.taxItems.taxWithheld) + newTaxp.calculatedItems.penalty;
+                
+                return (taxOnAGI - newTaxp.taxItems.taxWithheld) + penalty;
             }
         }
 
         private bool isThereARefund()
         {
-            return newTaxp.taxItems.taxWithheld > newTaxp.calculatedItems.taxOnAGI;
+            return newTaxp.taxItems.taxWithheld > taxOnAGI;
         }
 
+        private void calculateFromTaxItems()
+        {
+            //Calculate each deduction at 1000
+            if (newTaxp.exemptions != 0)
+            {
+                deductCalc = (decimal)(newTaxp.exemptions * 1000.00);
+                Console.WriteLine(deductCalc);
+            }
+
+            //Calculate Real Estate Tax
+            if (newTaxp.taxItems.realEstate != 0)
+            {
+                reCalc = percentageCalc(newTaxp.taxItems.realEstate, 0.25);
+                Console.WriteLine(reCalc);
+            }
+
+            //Calculate Excise Tax
+            if (newTaxp.taxItems.excise != 0)
+            {
+                exciseCalc = percentageCalc(newTaxp.taxItems.excise, 0.25);
+                Console.WriteLine(exciseCalc);
+            }
+
+            //Deduction for medical
+            if (newTaxp.taxItems.medicalExpense != 0)
+            {
+                medCalc = percentageCalc(newTaxp.taxItems.medicalExpense, 0.08);
+                Console.WriteLine(medCalc);
+            }
+
+            //Add 15% for capital gains to gross(if present)
+            if (newTaxp.taxItems.gains != 0)
+            {
+                gainsCalc = percentageCalc(newTaxp.taxItems.gains, 0.15);
+                Console.WriteLine(gainsCalc);
+            }
+
+            //Sub 15% for capital loss to gross(if present)
+            if (newTaxp.taxItems.loss != 0)
+            {
+                lossCalc = percentageCalc(newTaxp.taxItems.loss, 0.15);
+                Console.WriteLine(lossCalc);
+            }
+
+
+            adjustedGrossIncome = calcAGI();
+            
+            taxOnAGI = graduatedTax();
+
+            //Calculate percentage withheld and penalize if applicable
+            //  penalty is 10% of what is leftover
+            percentageOfTaxPaid = taxPercentagePaid();
+            Console.WriteLine("Tax Percentage Paid: " + percentageOfTaxPaid);
+
+            //If the precentageOfTaxPaid is less than 90% add a 10% penalty on the difference
+            if (Math.Round(percentageOfTaxPaid, 2, MidpointRounding.AwayFromZero) < 0.90m)
+            {
+                penalty = (taxOnAGI - newTaxp.taxItems.taxWithheld) * 0.10m;
+                
+            }
+            else
+            {
+                penalty = 0.00m;
+                
+            }
+
+            if (isThereARefund())//there is a refund
+            {
+                owedOrRefund = calcOwedOrRefund();
+                lblOwedRefund.Text = "Refund:";
+            }
+            else //there is tax owed
+            {
+                owedOrRefund = calcOwedOrRefund();
+                Console.WriteLine("owedOrRefund: " + owedOrRefund);
+                lblOwedRefund.Text = "Tax Owed:";
+                
+            }
+        }
+
+        private void roundToWholeDollar()
+        {
+            newTaxp.taxItems.taxWithheld = Math.Round(newTaxp.taxItems.taxWithheld, 0, MidpointRounding.AwayFromZero);
+
+            adjustedGrossIncome = Math.Round(adjustedGrossIncome, 0, MidpointRounding.AwayFromZero);
+
+            taxOnAGI = Math.Round(taxOnAGI, 0, MidpointRounding.AwayFromZero);
+
+            penalty = Math.Round(penalty, 0, MidpointRounding.AwayFromZero);
+
+            owedOrRefund = Math.Round(owedOrRefund, 0, MidpointRounding.AwayFromZero);
+        }
+
+        private void assignToTextBox()
+        {
+            tbWithheld.Text = newTaxp.taxItems.taxWithheld.ToString("c");
+            //tbWithheld.Enabled = false;
+
+            tbAGI.Text = adjustedGrossIncome.ToString("c");
+            //tbAGI.Enabled = false;
+
+            tbCalcTax.Text = taxOnAGI.ToString("c");
+            //tbCalcTax.Enabled = false;
+
+            tbPenalty.Text = penalty.ToString("c");
+            //tbPenalty.Enabled = false;
+
+            tfOwedRefund.Text = owedOrRefund.ToString("c");
+            //tfOwedRefund.Enabled = false;
+        }
+
+        public static taxpayerFinal[] getArray()
+        {
+            return taxpArray;
+        }
+        
+        //View Records Button
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //close this window
+            this.Close();
+
+            //Open a dialog window that displays information in a sorted way
+            DisplayRecords displayRecords = new DisplayRecords();
+            displayRecords.ShowDialog();
+        }
+
+        private void initializeArray()
+        {
+            taxpayerFinal temp = new taxpayerFinal();
+            temp.name = "";
+            temp.ssn = "";
+            temp.owedOrRefunded = 0.00m;
+            for (int i = 0; i < SIZE; i++)
+            {
+                taxpArray[i] = temp;
+            }
+        }
+
+        /*private void sortArray()
+        {
+            int index = tracker - 1;
+            Console.WriteLine("Index value: " + index);
+            for(int i = index; index > 0; i++)
+            {
+                Console.WriteLine("Index " + i + ": " + taxpArray[i]);
+                Console.WriteLine("Index " + (i-1) + ": " + taxpArray[i-1]);
+
+                if (taxpArray[i].ssn.CompareTo(taxpArray[i-1].ssn) == -1)
+                {
+                    taxpayerFinal temp = taxpArray[i];
+                    taxpArray[i] = taxpArray[i - 1];
+                    taxpArray[i] = temp;
+                }
+            }
+        }*/
     }//End DisplayForm
 }
