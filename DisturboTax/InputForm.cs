@@ -320,7 +320,7 @@ namespace DisturboTax
 
         private void enableViewRecordButton()
         {
-            if (DisplayForm.tracker == 0)
+            if (DisplayForm.endIndex == 0)
             {
                 btnViewRecs.Enabled = false;
             }

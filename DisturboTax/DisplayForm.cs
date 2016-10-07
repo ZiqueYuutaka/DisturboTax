@@ -29,9 +29,10 @@ namespace DisturboTax
         
         private const int SIZE = 10;
         public static taxpayerFinal[] taxpArray = new taxpayerFinal[SIZE];
-        public static int tracker = 0;
+        public static int endIndex = 0;
         private taxpayer newTaxp;
         private decimal percentageOfTaxPaid;
+        private bool isSaved;
 
         public DisplayForm()
         {
@@ -41,15 +42,16 @@ namespace DisturboTax
         private void DisplayForm_Load(object sender, EventArgs e)
         {
             newTaxp = InputForm.getTaxpayerInfo();
+            isSaved = false;
             label7.Text = "Calculated tax information for:\n" + newTaxp.name;
 
-            if(tracker == 0)
+            if(endIndex == 0)
             {
-                button2.Enabled = false;
+                btnView.Enabled = false;
                 initializeArray();
             }else
             {
-                button2.Enabled = true;
+                btnView.Enabled = true;
             }
 
             calculateFromTaxItems();
@@ -66,7 +68,6 @@ namespace DisturboTax
 
             assignToTextBox();
 
-            saveData();
 
         }//End Form_load
 
@@ -74,9 +75,22 @@ namespace DisturboTax
         private void button1_Click(object sender, EventArgs e)
         {
             //Save data
-            if(tracker < SIZE)
+            if(endIndex < SIZE)
             {
-                Close();
+                if (!isSaved)
+                {
+                    System.Windows.Forms.DialogResult saveRecord;
+                    saveRecord = MessageBox.Show("You have data entered here. Save data?", "Save data",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if(saveRecord == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        isSaved = saveDataProcess();
+                    }
+                }
+                else
+                {
+                    Close();
+                }
             }
             else
             {
@@ -87,7 +101,7 @@ namespace DisturboTax
 
         private void saveData()
         {
-            if(tracker < SIZE)
+            if(endIndex < SIZE)
             {
                 taxpayerFinal final = new taxpayerFinal();
                 final.name = newTaxp.name;
@@ -102,7 +116,7 @@ namespace DisturboTax
                     final.owedOrRefunded = owedOrRefund;
                 }
 
-                taxpArray[tracker++] = final;
+                taxpArray[endIndex++] = final;
                 sortArray();
             }
         }
@@ -339,11 +353,6 @@ namespace DisturboTax
             tfOwedRefund.Text = owedOrRefund.ToString("c");
             //tfOwedRefund.Enabled = false;
         }
-
-        /*public static taxpayerFinal[] getArray()
-        {
-            return taxpArray;
-        }*/
         
         //View Records Button
         private void button2_Click(object sender, EventArgs e)
@@ -370,7 +379,7 @@ namespace DisturboTax
 
         private void sortArray()
         {
-            int index = tracker - 1;
+            int index = endIndex - 1;
             Console.WriteLine("Index value: " + index);
             for(; index > 0; index--)
             {
@@ -383,6 +392,28 @@ namespace DisturboTax
                     taxpArray[index-1] = temp;
                 }
             }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+            isSaved = saveDataProcess();
+
+        }
+
+        private bool saveDataProcess()
+        {
+            saveData();
+            if (endIndex > 0)
+            {
+                btnView.Enabled = true;
+            }
+            else
+            {
+                btnView.Enabled = false;
+            }
+
+            return true;
         }
     }//End DisplayForm
 }

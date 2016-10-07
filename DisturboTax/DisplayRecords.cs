@@ -100,12 +100,12 @@ namespace DisturboTax
             {
                 reorderArray();
                 DisplayForm.taxpArray = records;
-                DisplayForm.tracker--;
+                DisplayForm.endIndex--;
                 if(index < 0)
                     index--;
                 Console.WriteLine("index: " + index);
-                Console.WriteLine("tracker: " + DisplayForm.tracker);
-                enableDisableButton(btnNext, index, DisplayForm.tracker);
+                Console.WriteLine("tracker: " + DisplayForm.endIndex);
+                enableDisableButton(btnNext, index, DisplayForm.endIndex);
                 enableDisableButton(btnPrevious, index, 0);
                 tbName.Text = records[index].name;
                 tbSsn.Text = records[index].ssn;
@@ -118,7 +118,7 @@ namespace DisturboTax
                     tbOR.Text = records[index].owedOrRefunded.ToString("c");
                 }
             }
-            if (DisplayForm.tracker == 0)
+            if (DisplayForm.endIndex == 0)
             {
                 btnClearRec.Enabled = false;
             }
@@ -132,7 +132,7 @@ namespace DisturboTax
 
         private void reorderArray()
         {
-            for(int i = index; i < DisplayForm.tracker; i++)
+            for(int i = index; i < DisplayForm.endIndex; i++)
             {
                 records[i] = records[index + 1];
             }
