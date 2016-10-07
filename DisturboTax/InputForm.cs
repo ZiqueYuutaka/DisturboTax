@@ -63,7 +63,7 @@ namespace DisturboTax
         //Calculate button
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Beginning form parsing");
+
             taxp.name = nameBox.Text;
             taxp.address = addressBox.Text;
             taxp.city = cityBox.Text;
@@ -198,6 +198,15 @@ namespace DisturboTax
             }
             return true;
         }
+
+        private bool isPresent(TextBox textBox)
+        {
+            if(textBox.Text == "")
+            {
+                return false;
+            }
+            return true;
+        }
         
         private bool isSelected(ComboBox cBox, String name)
         {
@@ -301,6 +310,7 @@ namespace DisturboTax
 
             if(result == System.Windows.Forms.DialogResult.Yes)
             {
+                Console.WriteLine(isAnyPresent().ToString());
                 if (isAnyPresent())
                 {
                     saveDataWindow = MessageBox.Show("You have data entered in this form. Save data?", "Save data",
@@ -326,31 +336,31 @@ namespace DisturboTax
 
         private bool isAnyPresent()
         {
-            return isPresent(nameBox, "Name") ||
+            return isPresent(nameBox) ||
 
-                   isPresent(addressBox, "Address") ||
+                   isPresent(addressBox) ||
 
-                   isPresent(cityBox, "City") ||
+                   isPresent(cityBox) ||
 
-                   isPresent(zipBox, "Zipcode") ||
+                   isPresent(zipBox) ||
 
-                   isPresent(ssnBox, "SSN") ||
+                   isPresent(ssnBox) ||
 
-                   isPresent(exemptionsBox, "Exemptions") ||
+                   isPresent(exemptionsBox) ||
 
-                   isPresent(grossEarningsBox, "Gross Earnings") ||
+                   isPresent(grossEarningsBox) ||
 
-                   isPresent(withheldBox, "Tax Withheld") ||
+                   isPresent(withheldBox) ||
 
-                   isPresent(gainsBox, "Capital Gains") ||
+                   isPresent(gainsBox) ||
 
-                   isPresent(lossBox, "Capital Loss") ||
+                   isPresent(lossBox) ||
 
-                   isPresent(exciseBox, "Excise Tax") ||
+                   isPresent(exciseBox) ||
 
-                   isPresent(reBox, "Real Estate Tax") ||
+                   isPresent(reBox) ||
 
-                   isPresent(medicalBox, "Medical Expenses");
+                   isPresent(medicalBox);
         }
     }
 }
