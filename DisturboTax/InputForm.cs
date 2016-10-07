@@ -46,50 +46,6 @@ namespace DisturboTax
     public partial class InputForm : Form
     {
 
-        private void DEBUGFORM()
-        {
-            nameBox.Text = "John";
-            addressBox.Text = "64 Happy Land";
-            cityBox.Text = "City";
-            cobState.SelectedIndex = 8;
-            zipBox.Text = "12345";
-            ssnBox.Text = "4234567890";
-            exemptionsBox.Text = "3";
-
-            grossEarningsBox.Text = "20000.00";
-            withheldBox.Text = "3000.18";
-
-            gainsBox.Text = "100.00";
-            lossBox.Text = "100.00";
-            exciseBox.Text = "100.00";
-
-            reBox.Text = "100.00";
-            medicalBox.Text = "100.00";
-            button1.Focus();
-        }
-
-        private void DEBUGFORMTWO()
-        {
-            nameBox.Text = "Mary";
-            addressBox.Text = "64 Sad Land";
-            cityBox.Text = "City";
-            cobState.SelectedIndex = 8;
-            zipBox.Text = "12345";
-            ssnBox.Text = "6456789120";
-            exemptionsBox.Text = "3";
-
-            grossEarningsBox.Text = "10000000.00";
-            withheldBox.Text = "1234.00";
-
-            gainsBox.Text = "123.00";
-            lossBox.Text = "123.00";
-            exciseBox.Text = "0.00";
-
-            reBox.Text = "0.00";
-            medicalBox.Text = "0.00";
-            button1.Focus();
-        }
-
         static taxpayer taxp = new taxpayer();
 
         public InputForm()
@@ -100,8 +56,7 @@ namespace DisturboTax
         private void Form1_Load(object sender, EventArgs e)
         {
             loadStates();
-            if (true)
-                DEBUGFORM();
+
             enableViewRecordButton();
         }
 
@@ -137,7 +92,6 @@ namespace DisturboTax
                     DisplayForm display = new DisplayForm();
                     display.ShowDialog();
                     clearFields();
-                    DEBUGFORMTWO();
                     enableViewRecordButton();
                 }
             }

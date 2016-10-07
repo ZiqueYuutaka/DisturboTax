@@ -105,7 +105,6 @@ namespace DisturboTax
             {
                 taxpayerFinal final = new taxpayerFinal();
                 final.name = newTaxp.name;
-                Console.WriteLine("name: " + final.name);
                 final.ssn = newTaxp.ssn;
                 if (lblOwedRefund.Text.Equals("Tax Owed:"))
                 {
@@ -249,42 +248,36 @@ namespace DisturboTax
             if (newTaxp.exemptions != 0)
             {
                 deductCalc = (decimal)(newTaxp.exemptions * 1000.00);
-                Console.WriteLine(deductCalc);
             }
 
             //Calculate Real Estate Tax
             if (newTaxp.taxItems.realEstate != 0)
             {
                 reCalc = percentageCalc(newTaxp.taxItems.realEstate, 0.25);
-                Console.WriteLine(reCalc);
             }
 
             //Calculate Excise Tax
             if (newTaxp.taxItems.excise != 0)
             {
                 exciseCalc = percentageCalc(newTaxp.taxItems.excise, 0.25);
-                Console.WriteLine(exciseCalc);
             }
 
             //Deduction for medical
             if (newTaxp.taxItems.medicalExpense != 0)
             {
                 medCalc = percentageCalc(newTaxp.taxItems.medicalExpense, 0.08);
-                Console.WriteLine(medCalc);
             }
 
             //Add 15% for capital gains to gross(if present)
             if (newTaxp.taxItems.gains != 0)
             {
                 gainsCalc = percentageCalc(newTaxp.taxItems.gains, 0.15);
-                Console.WriteLine(gainsCalc);
             }
 
             //Sub 15% for capital loss to gross(if present)
             if (newTaxp.taxItems.loss != 0)
             {
                 lossCalc = percentageCalc(newTaxp.taxItems.loss, 0.15);
-                Console.WriteLine(lossCalc);
             }
 
 
@@ -295,7 +288,6 @@ namespace DisturboTax
             //Calculate percentage withheld and penalize if applicable
             //  penalty is 10% of what is leftover
             percentageOfTaxPaid = taxPercentagePaid();
-            Console.WriteLine("Tax Percentage Paid: " + percentageOfTaxPaid);
 
             //If the precentageOfTaxPaid is less than 90% add a 10% penalty on the difference
             if (Math.Round(percentageOfTaxPaid, 2, MidpointRounding.AwayFromZero) < 0.90m)
@@ -317,7 +309,6 @@ namespace DisturboTax
             else //there is tax owed
             {
                 owedOrRefund = calcOwedOrRefund();
-                Console.WriteLine("owedOrRefund: " + owedOrRefund);
                 lblOwedRefund.Text = "Tax Owed:";
                 
             }
@@ -380,7 +371,6 @@ namespace DisturboTax
         private void sortArray()
         {
             int index = endIndex - 1;
-            Console.WriteLine("Index value: " + index);
             for(; index > 0; index--)
             {
 

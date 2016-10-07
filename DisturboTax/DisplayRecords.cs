@@ -68,8 +68,7 @@ namespace DisturboTax
 
         private void enableDisableButton(Button btn, int index, int extrema)
         {
-            Console.WriteLine("index in function: " + index);
-            Console.WriteLine("tracker in function: " + extrema);
+
             if(index == extrema)
             {
                 btn.Enabled = false;
@@ -103,8 +102,7 @@ namespace DisturboTax
                 DisplayForm.endIndex--;
                 if(index < 0)
                     index--;
-                Console.WriteLine("index: " + index);
-                Console.WriteLine("tracker: " + DisplayForm.endIndex);
+
                 enableDisableButton(btnNext, index, DisplayForm.endIndex);
                 enableDisableButton(btnPrevious, index, 0);
                 tbName.Text = records[index].name;
